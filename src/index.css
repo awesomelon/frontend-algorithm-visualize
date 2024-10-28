@@ -14,3 +14,21 @@ body {
     min-height: 100vh;
     background-color: rgb(243 244 246);
 }
+
+pre[class*="language-"] {
+    margin: 0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+code[class*="language-"] {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.prose pre {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}

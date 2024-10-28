@@ -7,6 +7,7 @@ export enum ArrayState {
 }
 
 export type AlgorithmType = "bubble" | "selection" | "insertion" | "quick";
+export type LanguageType = "javascript" | "java";
 
 export interface SortingAlgorithmInfo {
   name: string;
@@ -48,3 +49,9 @@ export const sortingAlgorithms: Record<AlgorithmType, SortingAlgorithmInfo> = {
       "피벗을 기준으로 분할 정복하여 정렬하는 효율적인 알고리즘입니다.",
   },
 };
+
+// 중첩된 Record 타입을 사용하여 매핑
+export type AlgorithmMarkdown = Record<
+  AlgorithmType,
+  Record<LanguageType, string>
+>;

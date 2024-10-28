@@ -7,12 +7,21 @@ import {
   ChevronUp,
   ChevronDown,
 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
+
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-java";
+
 import {
   ArrayState,
   AlgorithmType,
   SortingStep,
   Stats,
   sortingAlgorithms,
+  AlgorithmMarkdown,
 } from "../types/sorting";
 
 const SortingVisualizer: React.FC = () => {
@@ -26,6 +35,9 @@ const SortingVisualizer: React.FC = () => {
   const [selectedAlgorithm, setSelectedAlgorithm] =
     useState<AlgorithmType>("bubble");
   const [stats, setStats] = useState<Stats>({ comparisons: 0, swaps: 0 });
+  const [selectedLanguage, setSelectedLanguage] = useState<
+    "javascript" | "java"
+  >("javascript");
 
   // 초기 배열 생성
   const generateArray = useCallback(
@@ -51,6 +63,168 @@ const SortingVisualizer: React.FC = () => {
     },
     [arraySize],
   );
+
+  const algorithmMarkdown: AlgorithmMarkdown = {
+    bubble: {
+      javascript: `### Bubble Sort - JavaScript
+\`\`\`javascript
+function bubbleSort(arr) {
+    const n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            }
+        }
+    }
+    return arr;
+}
+\`\`\``,
+      java: `### Bubble Sort - Java
+\`\`\`java
+public static void bubbleSort(int[] arr) {
+    int n = arr.length;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+\`\`\``,
+    },
+    selection: {
+      javascript: `### Selection Sort - JavaScript
+\`\`\`javascript
+function selectionSort(arr) {
+    const n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+        let minIdx = i;
+        for (let j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+        if (minIdx !== i) {
+            [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+        }
+    }
+    return arr;
+}
+\`\`\``,
+      java: `### Selection Sort - Java
+\`\`\`java
+public static void selectionSort(int[] arr) {
+    int n = arr.length;
+    for (int i = 0; i < n - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+        int temp = arr[minIdx];
+        arr[minIdx] = arr[i];
+        arr[i] = temp;
+    }
+}
+\`\`\``,
+    },
+    insertion: {
+      javascript: `### Insertion Sort - JavaScript
+\`\`\`javascript
+function insertionSort(arr) {
+    const n = arr.length;
+    for (let i = 1; i < n; i++) {
+        let key = arr[i];
+        let j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+    return arr;
+}
+\`\`\``,
+      java: `### Insertion Sort - Java
+\`\`\`java
+public static void insertionSort(int[] arr) {
+    int n = arr.length;
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+\`\`\``,
+    },
+    quick: {
+      javascript: `### Quick Sort - JavaScript
+\`\`\`javascript
+function quickSort(arr, low = 0, high = arr.length - 1) {
+    if (low < high) {
+        let pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+    return arr;
+}
+
+function partition(arr, low, high) {
+    let pivot = arr[high];
+    let i = low - 1;
+    
+    for (let j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+    
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+    return i + 1;
+}
+\`\`\``,
+      java: `### Quick Sort - Java
+\`\`\`java
+public static void quickSort(int[] arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+private static int partition(int[] arr, int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+    
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    
+    int temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+    
+    return i + 1;
+}
+\`\`\``,
+    },
+  };
 
   // 배열 크기 변경 핸들러
   const handleSizeChange = useCallback(
@@ -298,6 +472,22 @@ const SortingVisualizer: React.FC = () => {
     setIsPlaying(true);
   }, [getSortingSteps]);
 
+  // 색상 스타일 가져오기
+  const getBarColor = (state: ArrayState): string => {
+    switch (state) {
+      case ArrayState.COMPARING:
+        return "bg-yellow-400";
+      case ArrayState.SWAPPING:
+        return "bg-red-500";
+      case ArrayState.SORTED:
+        return "bg-green-500";
+      case ArrayState.PIVOT:
+        return "bg-purple-500";
+      default:
+        return "bg-blue-500";
+    }
+  };
+
   // 컴포넌트 마운트 시 초기 배열 생성
   useEffect(() => {
     const initialState = generateArray();
@@ -323,21 +513,11 @@ const SortingVisualizer: React.FC = () => {
     return () => clearTimeout(timer);
   }, [isPlaying, currentStep, sortingSteps, speed]);
 
-  // 색상 스타일 가져오기
-  const getBarColor = (state: ArrayState): string => {
-    switch (state) {
-      case ArrayState.COMPARING:
-        return "bg-yellow-400";
-      case ArrayState.SWAPPING:
-        return "bg-red-500";
-      case ArrayState.SORTED:
-        return "bg-green-500";
-      case ArrayState.PIVOT:
-        return "bg-purple-500";
-      default:
-        return "bg-blue-500";
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      Prism.highlightAll();
     }
-  };
+  }, [selectedAlgorithm, selectedLanguage]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -518,6 +698,36 @@ const SortingVisualizer: React.FC = () => {
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-green-500 rounded-sm"></div>
             <span className="text-sm">정렬 완료</span>
+          </div>
+        </div>
+      </div>
+      {/* 알고리즘 코드 */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-xl font-semibold mb-4">구현 코드</h2>
+        <div className="space-y-4">
+          <div className="flex space-x-4">
+            {["javascript", "java"].map((lang) => (
+              <button
+                key={lang}
+                className={`px-4 py-2 rounded-md ${
+                  selectedLanguage === lang
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+                onClick={() =>
+                  setSelectedLanguage(lang as "javascript" | "java")
+                }
+              >
+                {lang.charAt(0).toUpperCase() + lang.slice(1)}
+              </button>
+            ))}
+          </div>
+          <div className="bg-gray-50 rounded-lg overflow-hidden">
+            <ReactMarkdown
+              className={`prose max-w-none dark:prose-invert p-4 language-${selectedLanguage}`}
+            >
+              {algorithmMarkdown[selectedAlgorithm][selectedLanguage]}
+            </ReactMarkdown>
           </div>
         </div>
       </div>
