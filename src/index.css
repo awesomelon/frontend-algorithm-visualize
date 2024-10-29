@@ -32,3 +32,8 @@ code[class*="language-"] {
     padding: 0;
     background-color: transparent;
 }
+
+
+.prose h3 {
+    color: rgb(31 41 55);
+}

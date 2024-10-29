@@ -657,6 +657,37 @@ private static int partition(int[] arr, int low, int high) {
         </div>
       </div>
 
+      {/* 알고리즘 코드 */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-4">구현 코드</h2>
+        <div className="space-y-4">
+          <div className="flex space-x-4">
+            {["javascript", "java"].map((lang) => (
+              <button
+                key={lang}
+                className={`px-4 py-2 rounded-md ${
+                  selectedLanguage === lang
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+                onClick={() =>
+                  setSelectedLanguage(lang as "javascript" | "java")
+                }
+              >
+                {lang.charAt(0).toUpperCase() + lang.slice(1)}
+              </button>
+            ))}
+          </div>
+          <div className="bg-gray-50 rounded-lg overflow-hidden">
+            <ReactMarkdown
+              className={`prose max-w-none dark:prose-invert p-4 language-${selectedLanguage}`}
+            >
+              {algorithmMarkdown[selectedAlgorithm][selectedLanguage]}
+            </ReactMarkdown>
+          </div>
+        </div>
+      </div>
+
       {/* 시각화 영역 */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="w-full h-[400px] flex items-end justify-center gap-1">
@@ -698,36 +729,6 @@ private static int partition(int[] arr, int low, int high) {
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-green-500 rounded-sm"></div>
             <span className="text-sm">정렬 완료</span>
-          </div>
-        </div>
-      </div>
-      {/* 알고리즘 코드 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4">구현 코드</h2>
-        <div className="space-y-4">
-          <div className="flex space-x-4">
-            {["javascript", "java"].map((lang) => (
-              <button
-                key={lang}
-                className={`px-4 py-2 rounded-md ${
-                  selectedLanguage === lang
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-                onClick={() =>
-                  setSelectedLanguage(lang as "javascript" | "java")
-                }
-              >
-                {lang.charAt(0).toUpperCase() + lang.slice(1)}
-              </button>
-            ))}
-          </div>
-          <div className="bg-gray-50 rounded-lg overflow-hidden">
-            <ReactMarkdown
-              className={`prose max-w-none dark:prose-invert p-4 language-${selectedLanguage}`}
-            >
-              {algorithmMarkdown[selectedAlgorithm][selectedLanguage]}
-            </ReactMarkdown>
           </div>
         </div>
       </div>
