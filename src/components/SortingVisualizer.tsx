@@ -657,8 +657,53 @@ private static int partition(int[] arr, int low, int high) {
         </div>
       </div>
 
+      {/* 시각화 영역 */}
+      <div className="bg-white rounded-t-lg shadow-md p-6">
+        <div className="w-full h-[400px] flex items-end justify-center gap-1">
+          {array.map((value, index) => (
+            <div
+              key={index}
+              style={{
+                height: `${(value / 100) * 100}%`,
+                width: `${Math.max(8, Math.min(20, Math.floor(800 / arraySize)))}px`,
+                transition: "all 0.3s ease",
+              }}
+              className={`${getBarColor(arrayStates[index])} rounded-t-md transform hover:brightness-110`}
+              role="presentation"
+              aria-label={`Value: ${value}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* 범례 */}
+      <div className="bg-white rounded-b-lg shadow-md p-4 mb-6">
+        <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-blue-500 rounded-sm"></div>
+            <span className="text-sm">미정렬</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-yellow-400 rounded-sm"></div>
+            <span className="text-sm">비교 중</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-red-500 rounded-sm"></div>
+            <span className="text-sm">교환 중</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-purple-500 rounded-sm"></div>
+            <span className="text-sm">피벗</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-green-500 rounded-sm"></div>
+            <span className="text-sm">정렬 완료</span>
+          </div>
+        </div>
+      </div>
+
       {/* 알고리즘 코드 */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+      <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold mb-4">구현 코드</h2>
         <div className="space-y-4">
           <div className="flex space-x-4">
@@ -684,51 +729,6 @@ private static int partition(int[] arr, int low, int high) {
             >
               {algorithmMarkdown[selectedAlgorithm][selectedLanguage]}
             </ReactMarkdown>
-          </div>
-        </div>
-      </div>
-
-      {/* 시각화 영역 */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <div className="w-full h-[400px] flex items-end justify-center gap-1">
-          {array.map((value, index) => (
-            <div
-              key={index}
-              style={{
-                height: `${(value / 100) * 100}%`,
-                width: `${Math.max(8, Math.min(20, Math.floor(800 / arraySize)))}px`,
-                transition: "all 0.3s ease",
-              }}
-              className={`${getBarColor(arrayStates[index])} rounded-t-md transform hover:brightness-110`}
-              role="presentation"
-              aria-label={`Value: ${value}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* 범례 */}
-      <div className="bg-white rounded-lg shadow-md p-4">
-        <div className="flex flex-wrap justify-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-500 rounded-sm"></div>
-            <span className="text-sm">미정렬</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-yellow-400 rounded-sm"></div>
-            <span className="text-sm">비교 중</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-red-500 rounded-sm"></div>
-            <span className="text-sm">교환 중</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-purple-500 rounded-sm"></div>
-            <span className="text-sm">피벗</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-500 rounded-sm"></div>
-            <span className="text-sm">정렬 완료</span>
           </div>
         </div>
       </div>
