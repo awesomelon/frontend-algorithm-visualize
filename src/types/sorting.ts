@@ -1,12 +1,19 @@
+/* ./src/types/sorting.ts */
 export enum ArrayState {
   UNSORTED = "unsorted",
   COMPARING = "comparing",
   SWAPPING = "swapping",
   SORTED = "sorted",
   PIVOT = "pivot",
+  MERGING = "merging",
 }
 
-export type AlgorithmType = "bubble" | "selection" | "insertion" | "quick";
+export type AlgorithmType =
+  | "bubble"
+  | "selection"
+  | "insertion"
+  | "quick"
+  | "merge";
 export type LanguageType = "javascript" | "java";
 
 export interface SortingAlgorithmInfo {
@@ -48,9 +55,14 @@ export const sortingAlgorithms: Record<AlgorithmType, SortingAlgorithmInfo> = {
     description:
       "피벗을 기준으로 분할 정복하여 정렬하는 효율적인 알고리즘입니다.",
   },
+  merge: {
+    name: "병합 정렬",
+    complexity: "O(n log n)",
+    description:
+      "배열을 재귀적으로 분할한 후 병합하여 정렬하는 안정적인 알고리즘입니다.",
+  },
 };
 
-// 중첩된 Record 타입을 사용하여 매핑
 export type AlgorithmMarkdown = Record<
   AlgorithmType,
   Record<LanguageType, string>
