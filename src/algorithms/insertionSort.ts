@@ -33,23 +33,39 @@ export const generateInsertionSortSteps = (arr: number[]): SortingStep[] => {
       stats: { comparisons, swaps },
     });
 
-    while (j >= 0 && array[j] > key) {
+    while (j >= 0) {
       comparisons++;
-      swaps++;
-      array[j + 1] = array[j];
 
-      // 교환 상태 추가
+      // 비교 상태 추가
       steps.push({
         array: [...array],
         states: array.map((_, index) => {
-          if (index === j || index === j + 1) return ArrayState.SWAPPING;
-          if (index < i) return ArrayState.SORTED;
+          if (index === j) return ArrayState.COMPARING;
+          if (index === i) return ArrayState.PIVOT;
+          if (index < j) return ArrayState.SORTED;
           return ArrayState.UNSORTED;
         }),
         stats: { comparisons, swaps },
       });
 
-      j--;
+      if (array[j] > key) {
+        swaps++;
+        array[j + 1] = array[j];
+
+        // 교환 상태 추가
+        steps.push({
+          array: [...array],
+          states: array.map((_, index) => {
+            if (index === j || index === j + 1) return ArrayState.SWAPPING;
+            if (index < j) return ArrayState.SORTED;
+            return ArrayState.UNSORTED;
+          }),
+          stats: { comparisons, swaps },
+        });
+        j--;
+      } else {
+        break;
+      }
     }
     array[j + 1] = key;
   }

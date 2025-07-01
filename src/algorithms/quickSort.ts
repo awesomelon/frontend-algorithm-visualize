@@ -11,6 +11,13 @@ export const generateQuickSortSteps = (arr: number[]): SortingStep[] => {
   let comparisons = 0;
   let swaps = 0;
 
+  // 초기 상태 추가
+  steps.push({
+    array: [...array],
+    states: new Array(array.length).fill(ArrayState.UNSORTED),
+    stats: { comparisons, swaps },
+  });
+
   /**
    * The main Quick Sort recursive function.
    * @param left - The starting index.
@@ -26,7 +33,7 @@ export const generateQuickSortSteps = (arr: number[]): SortingStep[] => {
     steps.push({
       array: [...array],
       states: array.map((_, index) =>
-        index === right ? ArrayState.PIVOT : ArrayState.UNSORTED,
+        index === right ? ArrayState.PIVOT : ArrayState.UNSORTED
       ),
       stats: { comparisons, swaps },
     });
@@ -58,7 +65,7 @@ export const generateQuickSortSteps = (arr: number[]): SortingStep[] => {
               ? ArrayState.SWAPPING
               : index === right
                 ? ArrayState.PIVOT
-                : ArrayState.UNSORTED,
+                : ArrayState.UNSORTED
           ),
           stats: { comparisons, swaps },
         });
@@ -74,7 +81,7 @@ export const generateQuickSortSteps = (arr: number[]): SortingStep[] => {
       states: array.map((_, index) =>
         index === i + 1 || index === right
           ? ArrayState.SWAPPING
-          : ArrayState.UNSORTED,
+          : ArrayState.UNSORTED
       ),
       stats: { comparisons, swaps },
     });

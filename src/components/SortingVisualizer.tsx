@@ -14,6 +14,9 @@ import {
   sortingAlgorithms,
 } from "../types/sorting";
 import { algorithmMarkdown, getSortingSteps } from "../algorithms";
+import { useArrayGenerator } from "../hooks/useArrayGenerator";
+import { useSortingAnimation } from "../hooks/useSortingAnimation";
+import { getBarColor } from "../utils/colorUtils";
 import ControlPanel from "./ControlPanel";
 import PlaybackControls from "./PlaybackControls";
 import AlgorithmDescription from "./AlgorithmDescription";
@@ -126,6 +129,7 @@ const reducer = (state: State, action: Action): State => {
 
 const SortingVisualizer: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { generateArray: generateArrayData } = useArrayGenerator();
 
   const {
     array,
@@ -143,22 +147,22 @@ const SortingVisualizer: React.FC = () => {
   // 초기 배열 생성
   const generateArray = useCallback(
     (size: number = arraySize) => {
-      const newArray = Array.from(
-        { length: size },
-        () => Math.floor(Math.random() * 80) + 10,
-      );
-      const newStates = new Array(size).fill(ArrayState.UNSORTED);
+      const {
+        array: newArray,
+        states: newStates,
+        stats: newStats,
+      } = generateArrayData(size);
 
       dispatch({
         type: "GENERATE_ARRAY",
         payload: {
           array: newArray,
           states: newStates,
-          stats: { comparisons: 0, swaps: 0 },
-        }, // size 속성 제외
+          stats: newStats,
+        },
       });
     },
-    [arraySize],
+    [arraySize, generateArrayData]
   );
 
   // 정렬 알고리즘 선택에 따른 정렬 단계 생성
@@ -173,42 +177,23 @@ const SortingVisualizer: React.FC = () => {
       dispatch({ type: "SET_SIZE", payload: newSize });
       generateArray(newSize);
     },
-    [generateArray],
+    [generateArray]
   );
-
-  // 색상 스타일 가져오기
-  const getBarColor = useCallback((state: ArrayState): string => {
-    switch (state) {
-      case ArrayState.COMPARING:
-        return "bg-yellow-400";
-      case ArrayState.SWAPPING:
-        return "bg-red-500";
-      case ArrayState.SORTED:
-        return "bg-green-500";
-      case ArrayState.PIVOT:
-        return "bg-purple-500";
-      default:
-        return "bg-blue-500";
-    }
-  }, []);
 
   // 컴포넌트 마운트 시 초기 배열 생성
   useEffect(() => {
     generateArray();
   }, [generateArray]);
 
-  // 애니메이션 실행
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isPlaying && currentStep < sortingSteps.length - 1) {
-      timer = setTimeout(() => {
-        dispatch({ type: "NEXT_STEP" });
-      }, 1000 / speed);
-    } else if (currentStep >= sortingSteps.length - 1 && isPlaying) {
-      dispatch({ type: "TOGGLE_PLAY" });
-    }
-    return () => clearTimeout(timer);
-  }, [isPlaying, currentStep, sortingSteps.length, speed]);
+  // 애니메이션 관리
+  useSortingAnimation({
+    isPlaying,
+    currentStep,
+    sortingSteps,
+    speed,
+    onNextStep: () => dispatch({ type: "NEXT_STEP" }),
+    onTogglePlay: () => dispatch({ type: "TOGGLE_PLAY" }),
+  });
 
   useEffect(() => {
     if (typeof window !== "undefined") {

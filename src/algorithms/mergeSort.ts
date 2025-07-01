@@ -9,6 +9,13 @@ export const generateMergeSortSteps = (arr: number[]): SortingStep[] => {
   let comparisons = 0;
   let swaps = 0;
 
+  // 초기 상태 추가
+  steps.push({
+    array: [...array],
+    states: new Array(array.length).fill(ArrayState.UNSORTED),
+    stats: { comparisons, swaps },
+  });
+
   /**
    * The main Merge Sort recursive function.
    * @param left - The starting index.
@@ -42,7 +49,7 @@ export const generateMergeSortSteps = (arr: number[]): SortingStep[] => {
       states: array.map((_, index) =>
         index >= left && index <= right
           ? ArrayState.MERGING
-          : ArrayState.UNSORTED,
+          : ArrayState.UNSORTED
       ),
       stats: { comparisons, swaps },
     });
@@ -58,7 +65,7 @@ export const generateMergeSortSteps = (arr: number[]): SortingStep[] => {
             ? ArrayState.COMPARING
             : index >= left && index <= right
               ? ArrayState.MERGING
-              : ArrayState.UNSORTED,
+              : ArrayState.UNSORTED
         ),
         stats: { comparisons, swaps },
       });
@@ -80,7 +87,7 @@ export const generateMergeSortSteps = (arr: number[]): SortingStep[] => {
             ? ArrayState.SWAPPING
             : index >= left && index <= right
               ? ArrayState.MERGING
-              : ArrayState.UNSORTED,
+              : ArrayState.UNSORTED
         ),
         stats: { comparisons, swaps },
       });
@@ -99,7 +106,7 @@ export const generateMergeSortSteps = (arr: number[]): SortingStep[] => {
             ? ArrayState.SWAPPING
             : index >= left && index <= right
               ? ArrayState.MERGING
-              : ArrayState.UNSORTED,
+              : ArrayState.UNSORTED
         ),
         stats: { comparisons, swaps },
       });
@@ -119,7 +126,7 @@ export const generateMergeSortSteps = (arr: number[]): SortingStep[] => {
             ? ArrayState.SWAPPING
             : index >= left && index <= right
               ? ArrayState.MERGING
-              : ArrayState.UNSORTED,
+              : ArrayState.UNSORTED
         ),
         stats: { comparisons, swaps },
       });
