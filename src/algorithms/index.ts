@@ -14,6 +14,7 @@ import {
 } from "./insertionSort.ts";
 import { generateQuickSortSteps, quickSortMarkdown } from "./quickSort.ts";
 import { generateMergeSortSteps, mergeSortMarkdown } from "./mergeSort.ts";
+import { generateHeapSortSteps, heapSortMarkdown } from "./heapSort.ts";
 
 /**
  * Dispatcher function to get sorting steps based on the algorithm type.
@@ -23,7 +24,7 @@ import { generateMergeSortSteps, mergeSortMarkdown } from "./mergeSort.ts";
  */
 export const getSortingSteps = (
   algorithm: AlgorithmType,
-  arr: number[],
+  arr: number[]
 ): SortingStep[] => {
   switch (algorithm) {
     case "bubble":
@@ -36,6 +37,8 @@ export const getSortingSteps = (
       return generateQuickSortSteps(arr);
     case "merge":
       return generateMergeSortSteps(arr);
+    case "heap":
+      return generateHeapSortSteps(arr);
     default:
       return [];
   }
@@ -47,4 +50,5 @@ export const algorithmMarkdown: AlgorithmMarkdown = {
   insertion: insertionSortMarkdown,
   quick: quickSortMarkdown,
   merge: mergeSortMarkdown,
+  heap: heapSortMarkdown,
 };

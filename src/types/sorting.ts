@@ -13,7 +13,8 @@ export type AlgorithmType =
   | "selection"
   | "insertion"
   | "quick"
-  | "merge";
+  | "merge"
+  | "heap";
 export type LanguageType = "javascript" | "java";
 
 export interface SortingAlgorithmInfo {
@@ -60,6 +61,12 @@ export const sortingAlgorithms: Record<AlgorithmType, SortingAlgorithmInfo> = {
     complexity: "O(n log n)",
     description:
       "배열을 재귀적으로 분할한 후 병합하여 정렬하는 안정적인 알고리즘입니다.",
+  },
+  heap: {
+    name: "힙 정렬",
+    complexity: "O(n log n)",
+    description:
+      "힙 자료구조를 이용하여 정렬하는 효율적이고 안정적인 알고리즘입니다.",
   },
 };
 
